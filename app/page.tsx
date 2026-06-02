@@ -201,11 +201,10 @@ function ProjectCard({ title, description, tech, color, icon, flagship, course, 
       }}>
         <span style={{ fontSize: 28 }}>{icon}</span>
         <div>
-          <div style={{ fontFamily: display, fontSize: flagship ? 19 : 17, fontWeight: 400, lineHeight: 1.3 }}>{title}</div>
+          <div style={{ fontFamily: display, fontSize: 17, fontWeight: 400, lineHeight: 1.3 }}>{title}</div>
           {course && <div style={{ fontSize: 11, color: "#999", marginTop: 2 }}>{course}</div>}
         </div>
-        {link && !flagship && <span style={{ marginLeft: "auto", fontSize: 14, opacity: h ? 0.5 : 0.2, transform: "rotate(-45deg)", transition: "opacity 0.3s ease" }}>→</span>}
-        {flagship && <span style={{ marginLeft: "auto", fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 10px", background: `${color}20`, color, fontWeight: 600, flexShrink: 0 }}>Flagship</span>}
+        {link && <span style={{ marginLeft: "auto", fontSize: 14, opacity: h ? 0.5 : 0.2, transform: "rotate(-45deg)", transition: "opacity 0.3s ease" }}>→</span>}
       </div>
       <div style={{ padding: "18px 22px 22px", flex: 1, display: "flex", flexDirection: "column" }}>
         <p style={{ fontSize: 13, lineHeight: 1.65, fontWeight: 300, color: "#555", flex: 1, marginBottom: 14 }}>{description}</p>
