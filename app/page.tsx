@@ -22,7 +22,7 @@ const tableauProjects = [
     tech: ["Tableau", "Data Storytelling", "Kaggle"],
     color: "#4E79A7",
     icon: "🏅",
-    flagship: true,
+
     link: "https://public.tableau.com/app/profile/keith.wong6254/viz/Wong_Keith_Final_Project_17804196306470/Sheet1",
   },
   {
@@ -42,7 +42,7 @@ const notebooks = [
     tech: ["Python", "pandas", "seaborn", "matplotlib"],
     color: "#E50914",
     icon: "🎬",
-    flagship: true,
+
     link: "https://github.com/keithwong8294/portfolio/blob/main/Jupyter%20Notebooks/Netflix_EDA.ipynb",
   },
   {
@@ -80,7 +80,7 @@ const papers = [
     link: "https://github.com/keithwong8294/portfolio/blob/main/Papers/Wong_Keith_Final_Report.pdf",
     color: "#4E79A7",
     icon: "🏅",
-    flagship: true,
+
   },
   {
     title: "Cryptocurrency: Emerging Digital Technology",
@@ -186,7 +186,7 @@ function SubLabel({ children }: { children: React.ReactNode }) {
   return <div style={{ fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", color: "#999", marginBottom: 20, marginTop: 8 }}>{children}</div>;
 }
 
-function ProjectCard({ title, description, tech, color, icon, flagship, course, link, style: extraStyle }: { title: string; description: string; tech?: string[]; color: string; icon: string; flagship?: boolean; course?: string; link?: string; style?: React.CSSProperties }) {
+function ProjectCard({ title, description, tech, color, icon, course, link, style: extraStyle }: { title: string; description: string; tech?: string[]; color: string; icon: string; course?: string; link?: string; style?: React.CSSProperties }) {
   const [h, setH] = useState(false);
   return (
     <div onClick={() => link && window.open(link, "_blank")} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
