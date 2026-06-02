@@ -220,7 +220,7 @@ function ProjectCard({ title, description, tech, color, icon, flagship, course, 
 function TimelineItem({ item }: { item: { role: string; org: string; location?: string; period: string; bullets?: string[] } }) {
   return (
     <div style={{ padding: "28px 0", borderBottom: "1px solid rgba(26,26,26,0.08)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16, marginBottom: 4 }}>
+      <div className="timeline-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16, marginBottom: 4 }}>
         <h3 style={{ fontFamily: display, fontSize: 19, fontWeight: 400 }}>{item.role}</h3>
         <span style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "#999", flexShrink: 0 }}>{item.period}</span>
       </div>
@@ -286,8 +286,10 @@ export default function KeithPortfolio() {
         .count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:10px;font-size:11px;font-weight:600;margin-left:6px;padding:0 6px}
 
         @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; text-align: center; }
-          .hero-grid .photo-frame { max-width: 260px; margin: 0 auto; order: -1; }
+          /* Hero: offset fixed nav so content never hides behind it */
+          #home { padding-top: 88px !important; padding-bottom: 60px !important; align-items: flex-start !important; }
+          .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; text-align: center; }
+          .hero-grid .photo-frame { max-width: 220px; margin: 0 auto; order: -1; aspect-ratio: 1/1 !important; }
           .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
           .about-grid .photo-frame { max-width: 240px; margin: 0 auto; }
           .portfolio-cards-3 { grid-template-columns: 1fr !important; }
@@ -295,21 +297,32 @@ export default function KeithPortfolio() {
           .resume-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
           .contact-wrap { gap: 28px 32px !important; }
           .contact-wrap a { min-width: unset !important; }
-          .nav-links { gap: 16px !important; }
-          .nav-links button { font-size: 11px !important; letter-spacing: 0.05em !important; }
+          /* Nav: tighten but keep on one line */
+          .nav-links { gap: 16px !important; flex-wrap: nowrap; overflow: hidden; }
+          .nav-links button { font-size: 11px !important; letter-spacing: 0.04em !important; white-space: nowrap; }
           .section-pad { padding-top: 80px !important; padding-bottom: 80px !important; }
-          .hero-title { font-size: 48px !important; }
+          .hero-title { font-size: 44px !important; }
+          .hero-line { overflow: visible !important; }
           .hero-btn { display: flex; justify-content: center; }
           .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+          /* Timeline: stack role and period vertically so they don't squish */
+          .timeline-row { flex-direction: column !important; align-items: flex-start !important; gap: 2px !important; }
+          /* Featured card: keep text readable */
+          .featured-card { padding: 32px 24px !important; }
         }
         @media (max-width: 480px) {
-          .nav-links { gap: 10px !important; }
+          #home { padding-top: 80px !important; }
+          .nav-links { gap: 8px !important; }
           .nav-links button { font-size: 10px !important; padding: 0 !important; }
-          .hero-title { font-size: 40px !important; }
-          .featured-card { padding: 28px 24px !important; }
-          .featured-card h3 { font-size: 24px !important; }
+          .hero-title { font-size: 36px !important; }
+          .hero-grid .photo-frame { max-width: 180px; }
+          .featured-card { padding: 24px 20px !important; }
+          .featured-card h3 { font-size: 22px !important; }
           .tab-row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-          .tab-btn { padding: 8px 12px !important; font-size: 11px !important; }
+          .tab-btn { padding: 8px 10px !important; font-size: 10px !important; }
+          .section-pad { padding-top: 60px !important; padding-bottom: 60px !important; }
+          /* Contact links: full width on very small screens */
+          .contact-wrap { flex-direction: column !important; }
         }
       `}</style>
 
