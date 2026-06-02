@@ -250,7 +250,12 @@ export default function KeithPortfolio() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 72;
+    window.scrollTo({ top: id === "home" ? 0 : top, behavior: "smooth" });
+  };
 
   const portfolioTabs = [
     { key: "all", label: "All Work" },
@@ -271,7 +276,7 @@ export default function KeithPortfolio() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap');
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        html{scroll-behavior:smooth}body{overflow-x:hidden}
+        html{scroll-behavior:smooth;scroll-padding-top:80px}body{overflow-x:hidden}
         ::selection{background:#1a1a1a;color:#f5f0eb}
         .nav-link{position:relative}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:#1a1a1a;transition:width .3s ease}.nav-link:hover::after,.nav-link.active::after{width:100%}
         .contact-link{position:relative;display:inline-block;transition:color .3s ease}.contact-link::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .4s cubic-bezier(.22,1,.36,1)}.contact-link:hover::after{transform:scaleX(1);transform-origin:left}
@@ -290,8 +295,8 @@ export default function KeithPortfolio() {
           #home { padding-top: 88px !important; padding-bottom: 60px !important; align-items: flex-start !important; }
           .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; text-align: center; }
           .hero-grid .photo-frame { max-width: 220px; margin: 0 auto; order: -1; aspect-ratio: 1/1 !important; }
-          .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .about-grid .photo-frame { max-width: 240px; margin: 0 auto; }
+          .about-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .about-grid .photo-frame { max-width: 200px; margin: 0 auto; aspect-ratio: 1/1 !important; }
           .portfolio-cards-3 { grid-template-columns: 1fr !important; }
           .portfolio-cards-2 { grid-template-columns: 1fr !important; }
           .resume-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
@@ -302,7 +307,6 @@ export default function KeithPortfolio() {
           .nav-links button { font-size: 11px !important; letter-spacing: 0.04em !important; white-space: nowrap; }
           .section-pad { padding-top: 80px !important; padding-bottom: 80px !important; }
           .hero-title { font-size: 44px !important; }
-          .hero-line { overflow: visible !important; }
           .hero-btn { display: flex; justify-content: center; }
           .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
           /* Timeline: stack role and period vertically so they don't squish */
