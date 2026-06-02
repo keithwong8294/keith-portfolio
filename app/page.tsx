@@ -92,13 +92,13 @@ const papers = [
     icon: "₿",
   },
   {
-    title: "IT Consultant Project: Cisco Systems",
-    description: "Executive-style report from shadowing a Senior Network Engineer at Cisco — covering enterprise networking infrastructure, cybersecurity solutions, and career pathways in IT.",
-    course: "ITI 220 · Mar 2026",
-    tech: ["Networking", "Cisco", "Consulting"],
-    link: "https://github.com/keithwong8294/portfolio/blob/main/Papers/ICP%20Final%20Report.pdf",
+    title: "Is AI Making Us Dumber?",
+    description: "DCIM capstone research paper and video essay exploring how generative AI tools are reshaping critical thinking, creativity, and cognitive independence in the digital age.",
+    course: "DCIM Digital Capstone · 2026",
+    tech: ["Research", "AI Ethics", "Video Essay"],
+    link: "https://github.com/keithwong8294/portfolio/blob/main/Papers/Is_AI_Making_Us_Dumber_Research_Paper.pdf",
     color: "#59A14F",
-    icon: "🌐",
+    icon: "🤖",
   },
   {
     title: "Airbnb and Discrimination",
@@ -313,6 +313,8 @@ export default function KeithPortfolio() {
           .timeline-row { flex-direction: column !important; align-items: flex-start !important; gap: 2px !important; }
           /* Featured card: keep text readable */
           .featured-card { padding: 32px 24px !important; }
+          /* Tabs: horizontally scrollable on all mobile sizes */
+          .tab-row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         }
         @media (max-width: 480px) {
           #home { padding-top: 80px !important; }
@@ -322,7 +324,6 @@ export default function KeithPortfolio() {
           .hero-grid .photo-frame { max-width: 180px; }
           .featured-card { padding: 24px 20px !important; }
           .featured-card h3 { font-size: 22px !important; }
-          .tab-row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
           .tab-btn { padding: 8px 10px !important; font-size: 10px !important; }
           .section-pad { padding-top: 60px !important; padding-bottom: 60px !important; }
           /* Contact links: full width on very small screens */
