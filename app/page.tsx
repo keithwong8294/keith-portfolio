@@ -186,18 +186,7 @@ function SubLabel({ children }: { children: React.ReactNode }) {
   return <div style={{ fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", color: "#999", marginBottom: 20, marginTop: 8 }}>{children}</div>;
 }
 
-interface ProjectCardProps {
-  title: string;
-  description: string;
-  tech?: string[];
-  color: string;
-  icon: string;
-  flagship?: boolean;
-  course?: string;
-  link?: string;
-  style?: React.CSSProperties;
-}
-function ProjectCard({ title, description, tech, color, icon, flagship, course, link, style: extraStyle }: ProjectCardProps) {
+function ProjectCard({ title, description, tech, color, icon, flagship, course, link, style: extraStyle }: { title: string; description: string; tech?: string[]; color: string; icon: string; flagship?: boolean; course?: string; link?: string; style?: React.CSSProperties }) {
   const [h, setH] = useState(false);
   return (
     <div onClick={() => link && window.open(link, "_blank")} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{
@@ -221,21 +210,14 @@ function ProjectCard({ title, description, tech, color, icon, flagship, course, 
       <div style={{ padding: "18px 22px 22px", flex: 1, display: "flex", flexDirection: "column" }}>
         <p style={{ fontSize: 13, lineHeight: 1.65, fontWeight: 300, color: "#555", flex: 1, marginBottom: 14 }}>{description}</p>
         <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-          {(tech || []).map(t => <span key={t} style={{ fontSize: 10, padding: "3px 9px", background: `${color}10`, color: `${color}CC`, fontWeight: 500 }}>{t}</span>)}
+          {(tech || []).map((t: string) => <span key={t} style={{ fontSize: 10, padding: "3px 9px", background: `${color}10`, color: `${color}CC`, fontWeight: 500 }}>{t}</span>)}
         </div>
       </div>
     </div>
   );
 }
 
-interface TimelineItemData {
-  role: string;
-  org: string;
-  location?: string;
-  period: string;
-  bullets?: string[];
-}
-function TimelineItem({ item }: { item: TimelineItemData }) {
+function TimelineItem({ item }: { item: { role: string; org: string; location?: string; period: string; bullets?: string[] } }) {
   return (
     <div style={{ padding: "28px 0", borderBottom: "1px solid rgba(26,26,26,0.08)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16, marginBottom: 4 }}>
@@ -244,7 +226,7 @@ function TimelineItem({ item }: { item: TimelineItemData }) {
       </div>
       <div style={{ fontSize: 13, color: "#999", marginBottom: item.bullets ? 12 : 0 }}>{item.org}{item.location ? ` · ${item.location}` : ""}</div>
       {item.bullets && <div style={{ fontSize: 13, lineHeight: 1.75, color: "#666", fontWeight: 300 }}>
-        {item.bullets.map((b, i) => <div key={i} style={{ paddingLeft: 14, position: "relative", marginBottom: 2 }}><span style={{ position: "absolute", left: 0, color: "#ccc" }}>·</span>{b}</div>)}
+        {item.bullets.map((b: string, i: number) => <div key={i} style={{ paddingLeft: 14, position: "relative", marginBottom: 2 }}><span style={{ position: "absolute", left: 0, color: "#ccc" }}>·</span>{b}</div>)}
       </div>}
     </div>
   );
@@ -260,7 +242,7 @@ export default function KeithPortfolio() {
   useEffect(() => {
     const onScroll = () => {
       setScrollY(window.scrollY);
-      const offsets = SECTIONS.map(id => { const el = document.getElementById(id); return el ? { id, top: el.offsetTop - 120 } : null; }).filter((x): x is { id: string; top: number } => x !== null);
+      const offsets = SECTIONS.map(id => { const el = document.getElementById(id); return el ? { id, top: el.offsetTop - 120 } : null; }).filter(Boolean) as { id: string; top: number }[];
       const current = offsets.reverse().find(s => window.scrollY >= s.top);
       if (current) setActiveSection(current.id);
     };
@@ -302,6 +284,33 @@ export default function KeithPortfolio() {
         .tab-btn{background:none;border:none;cursor:pointer;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px 18px;transition:all .3s ease;border-bottom:2px solid transparent;font-family:'DM Sans',sans-serif;white-space:nowrap}
         .tab-btn.active{border-bottom-color:#1a1a1a;color:#1a1a1a;font-weight:500}.tab-btn:not(.active){color:#999}.tab-btn:hover:not(.active){color:#666}
         .count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:10px;font-size:11px;font-weight:600;margin-left:6px;padding:0 6px}
+
+        @media (max-width: 768px) {
+          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; text-align: center; }
+          .hero-grid .photo-frame { max-width: 260px; margin: 0 auto; order: -1; }
+          .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .about-grid .photo-frame { max-width: 240px; margin: 0 auto; }
+          .portfolio-cards-3 { grid-template-columns: 1fr !important; }
+          .portfolio-cards-2 { grid-template-columns: 1fr !important; }
+          .resume-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .contact-wrap { gap: 28px 32px !important; }
+          .contact-wrap a { min-width: unset !important; }
+          .nav-links { gap: 16px !important; }
+          .nav-links button { font-size: 11px !important; letter-spacing: 0.05em !important; }
+          .section-pad { padding-top: 80px !important; padding-bottom: 80px !important; }
+          .hero-title { font-size: 48px !important; }
+          .hero-btn { display: flex; justify-content: center; }
+          .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+        }
+        @media (max-width: 480px) {
+          .nav-links { gap: 10px !important; }
+          .nav-links button { font-size: 10px !important; padding: 0 !important; }
+          .hero-title { font-size: 40px !important; }
+          .featured-card { padding: 28px 24px !important; }
+          .featured-card h3 { font-size: 24px !important; }
+          .tab-row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+          .tab-btn { padding: 8px 12px !important; font-size: 11px !important; }
+        }
       `}</style>
 
       <div style={{ fontFamily: font, background: "#f5f0eb", color: "#1a1a1a", minHeight: "100vh" }}>
@@ -311,7 +320,7 @@ export default function KeithPortfolio() {
         <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, background: scrollY > 50 ? "rgba(245,240,235,0.92)" : "transparent", backdropFilter: scrollY > 50 ? "blur(12px)" : "none", borderBottom: scrollY > 50 ? "1px solid rgba(26,26,26,0.06)" : "none", transition: "all 0.4s ease", padding: "0 max(24px,5vw)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", height: 72 }}>
             <button onClick={() => scrollTo("home")} style={{ fontFamily: display, fontSize: 22, background: "none", border: "none", cursor: "pointer", color: "#1a1a1a", fontStyle: "italic" }}>KW</button>
-            <div style={{ display: "flex", gap: 32 }}>
+            <div className="nav-links" style={{ display: "flex", gap: 32 }}>
               {SECTIONS.filter(s => s !== "home").map(s => (
                 <button key={s} onClick={() => scrollTo(s)} className={`nav-link ${activeSection === s ? "active" : ""}`}
                   style={{ background: "none", border: "none", cursor: "pointer", fontFamily: font, fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", color: "#1a1a1a", fontWeight: activeSection === s ? 500 : 400 }}>{s}</button>
@@ -323,15 +332,15 @@ export default function KeithPortfolio() {
         {/* HERO */}
         <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "0 max(24px,5vw)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 80, alignItems: "center" }}>
+            <div className="hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 80, alignItems: "center" }}>
               <div>
                 <div style={{ fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 32, color: "#888" }}>
                   <span style={{ animation: "slideUp .8s cubic-bezier(.22,1,.36,1) .2s forwards", opacity: 0, display: "inline-block" }}>IT&I · Builder · Cantonese Club VP · Fintech</span>
                 </div>
-                <div className="hero-line" style={{ marginBottom: 8 }}><span style={{ fontFamily: display, fontSize: "clamp(48px,7vw,88px)", lineHeight: 1.05, animationDelay: "0.3s" }}>Keith Wong</span></div>
-                <div className="hero-line" style={{ marginBottom: 40 }}><span style={{ fontFamily: display, fontSize: "clamp(48px,7vw,88px)", lineHeight: 1.05, fontStyle: "italic", color: "#999", animationDelay: "0.5s" }}>designs & builds</span></div>
+                <div className="hero-line" style={{ marginBottom: 8 }}><span className="hero-title" style={{ fontFamily: display, fontSize: "clamp(48px,7vw,88px)", lineHeight: 1.05, animationDelay: "0.3s" }}>Keith Wong</span></div>
+                <div className="hero-line" style={{ marginBottom: 40 }}><span className="hero-title" style={{ fontFamily: display, fontSize: "clamp(48px,7vw,88px)", lineHeight: 1.05, fontStyle: "italic", color: "#999", animationDelay: "0.5s" }}>designs & builds</span></div>
                 <div className="hero-line"><span style={{ fontSize: 17, lineHeight: 1.7, color: "#666", maxWidth: 480, display: "inline-block", animationDelay: "0.7s", fontWeight: 300 }}>Fourth-year Rutgers student studying Information Technology & Informatics, building fintech products and exploring data-driven storytelling.</span></div>
-                <div className="hero-line" style={{ marginTop: 48 }}>
+                <div className="hero-line hero-btn" style={{ marginTop: 48 }}>
                   <span style={{ animationDelay: "0.9s" }}>
                     <button onClick={() => scrollTo("portfolio")} style={{ fontFamily: font, fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", padding: "14px 36px", background: "#1a1a1a", color: "#f5f0eb", border: "none", cursor: "pointer", transition: "all .3s ease" }}
                       onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => (e.currentTarget as HTMLButtonElement).style.background = "#333"} onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => (e.currentTarget as HTMLButtonElement).style.background = "#1a1a1a"}>View Work</button>
@@ -346,10 +355,10 @@ export default function KeithPortfolio() {
         </section>
 
         {/* ABOUT */}
-        <section id="about" style={{ padding: "140px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
+        <section id="about" className="section-pad" style={{ padding: "140px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn><SectionLabel>About</SectionLabel></FadeIn>
-            <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 80, alignItems: "start" }}>
+            <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 80, alignItems: "start" }}>
               <FadeIn delay={0.1}>
                 <div className="photo-frame" style={{ width: "100%", aspectRatio: "3/4" }}><img src={ABOUT_IMG} alt="Keith Wong" style={{ filter: "grayscale(10%)" }} /></div>
               </FadeIn>
@@ -387,19 +396,19 @@ export default function KeithPortfolio() {
         </section>
 
         {/* PORTFOLIO */}
-        <section id="portfolio" style={{ padding: "140px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
+        <section id="portfolio" className="section-pad" style={{ padding: "140px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn><SectionLabel>Portfolio</SectionLabel></FadeIn>
             <FadeIn delay={0.1}><SectionTitle>Selected <span style={{ fontStyle: "italic" }}>work</span></SectionTitle></FadeIn>
 
             {/* Featured Product */}
             <FadeIn delay={0.15}>
-              <div style={{ background: "#1a1a1a", color: "#f5f0eb", padding: 48, marginBottom: 48, cursor: "pointer", transition: "transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease" }}
+              <div className="featured-card" style={{ background: "#1a1a1a", color: "#f5f0eb", padding: 48, marginBottom: 48, cursor: "pointer", transition: "transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease" }}
                 onClick={() => window.open(featuredProject.link, "_blank")}
-                onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 24px 64px rgba(0,0,0,0.15)"; }}
-                onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}>
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 24px 64px rgba(0,0,0,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
-                  <h3 style={{ fontFamily: display, fontSize: 32, fontWeight: 400 }}>{featuredProject.title}</h3>
+                  <h3 className="featured-title" style={{ fontFamily: display, fontSize: 32, fontWeight: 400 }}>{featuredProject.title}</h3>
                   <span style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", padding: "4px 12px", background: "rgba(245,240,235,0.12)" }}>Featured</span>
                   <span style={{ marginLeft: "auto", fontSize: 22, opacity: 0.3, transform: "rotate(-45deg)" }}>→</span>
                 </div>
@@ -413,7 +422,7 @@ export default function KeithPortfolio() {
 
             {/* Portfolio Filter Tabs */}
             <FadeIn delay={0.2}>
-              <div style={{ display: "flex", gap: 4, borderBottom: "1px solid rgba(26,26,26,0.08)", marginBottom: 32, overflowX: "auto" }}>
+              <div className="tab-row" style={{ display: "flex", gap: 4, borderBottom: "1px solid rgba(26,26,26,0.08)", marginBottom: 32, overflowX: "auto" }}>
                 {portfolioTabs.map(t => (
                   <button key={t.key} className={`tab-btn ${portfolioTab === t.key ? "active" : ""}`} onClick={() => setPortfolioTab(t.key)}>{t.label}</button>
                 ))}
@@ -425,7 +434,7 @@ export default function KeithPortfolio() {
               <>
                 <FadeIn delay={0.22}><SubLabel>Tableau Visualizations</SubLabel></FadeIn>
                 <FadeIn delay={0.25}>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginBottom: 48 }}>
+                  <div className="portfolio-cards-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginBottom: 48 }}>
                     {tableauProjects.map(p => <ProjectCard key={p.title} {...p} />)}
                   </div>
                 </FadeIn>
@@ -437,7 +446,7 @@ export default function KeithPortfolio() {
               <>
                 <FadeIn delay={0.28}><SubLabel>Data Science & Notebooks</SubLabel></FadeIn>
                 <FadeIn delay={0.3}>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginBottom: 48 }}>
+                  <div className="portfolio-cards-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginBottom: 48 }}>
                     {notebooks.map(p => <ProjectCard key={p.title} {...p} />)}
                   </div>
                 </FadeIn>
@@ -449,12 +458,12 @@ export default function KeithPortfolio() {
               <>
                 <FadeIn delay={0.34}><SubLabel>Research & Papers</SubLabel></FadeIn>
                 <FadeIn delay={0.36}>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 20 }}>
+                  <div className="portfolio-cards-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 20 }}>
                     {papers.slice(0, 3).map(p => <ProjectCard key={p.title} {...p} />)}
                   </div>
                 </FadeIn>
                 <FadeIn delay={0.4}>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 }}>
+                  <div className="portfolio-cards-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 }}>
                     {papers.slice(3).map(p => <ProjectCard key={p.title} {...p} />)}
                   </div>
                 </FadeIn>
@@ -464,12 +473,12 @@ export default function KeithPortfolio() {
         </section>
 
         {/* RESUME */}
-        <section id="resume" style={{ padding: "140px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
+        <section id="resume" className="section-pad" style={{ padding: "140px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn><SectionLabel>Resume</SectionLabel></FadeIn>
             <FadeIn delay={0.1}><SectionTitle>Experience & <span style={{ fontStyle: "italic" }}>Background</span></SectionTitle></FadeIn>
             <FadeIn delay={0.15}>
-              <div style={{ display: "flex", gap: 4, borderBottom: "1px solid rgba(26,26,26,0.08)", marginBottom: 40 }}>
+              <div className="tab-row" style={{ display: "flex", gap: 4, borderBottom: "1px solid rgba(26,26,26,0.08)", marginBottom: 40 }}>
                 {resumeTabs.map(t => <button key={t.key} className={`tab-btn ${resumeTab === t.key ? "active" : ""}`} onClick={() => setResumeTab(t.key)}>{t.label}</button>)}
               </div>
             </FadeIn>
@@ -517,11 +526,11 @@ export default function KeithPortfolio() {
             </FadeIn>
             <FadeIn delay={0.3}>
               <div style={{ marginTop: 40 }}>
-                <a href="/keith-resume.pdf" download="Keith_Wong_Resume.pdf" style={{ fontFamily: font, fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", padding: "14px 36px", background: "transparent", color: "#1a1a1a", border: "1px solid rgba(26,26,26,0.2)", cursor: "pointer", transition: "all .3s ease", display: "inline-block", textDecoration: "none" }}
-                  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { (e.currentTarget as HTMLAnchorElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLAnchorElement).style.color = "#f5f0eb"; }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; (e.currentTarget as HTMLAnchorElement).style.color = "#1a1a1a"; }}>
+                <button style={{ fontFamily: font, fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", padding: "14px 36px", background: "transparent", color: "#1a1a1a", border: "1px solid rgba(26,26,26,0.2)", cursor: "pointer", transition: "all .3s ease" }}
+                  onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => { (e.currentTarget as HTMLButtonElement).style.background = "#1a1a1a"; (e.currentTarget as HTMLButtonElement).style.color = "#f5f0eb"; }}
+                  onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; (e.currentTarget as HTMLButtonElement).style.color = "#1a1a1a"; }}>
                   Download Full Resume ↓
-                </a>
+                </button>
               </div>
             </FadeIn>
           </div>
@@ -535,7 +544,7 @@ export default function KeithPortfolio() {
               <h2 style={{ fontFamily: display, fontSize: "clamp(42px,5vw,72px)", lineHeight: 1.15, fontWeight: 400, marginBottom: 56 }}>Let's <span style={{ fontStyle: "italic" }}>connect.</span></h2>
             </FadeIn>
             <FadeIn delay={0.2}>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "36px 48px" }}>
+              <div className="contact-wrap" style={{ display: "flex", flexWrap: "wrap", gap: "36px 48px" }}>
                 {contactLinks.map(c => (
                   <a key={c.label} href={c.href} target={c.label !== "Email" ? "_blank" : undefined} rel="noopener noreferrer"
                     className="contact-link" style={{ textDecoration: "none", color: "#1a1a1a", display: "block", minWidth: 160 }}>
@@ -549,7 +558,7 @@ export default function KeithPortfolio() {
         </section>
 
         <footer style={{ padding: "40px max(24px,5vw)", borderTop: "1px solid rgba(26,26,26,0.08)" }}>
-          <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div className="footer-inner" style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span style={{ fontSize: 13, color: "#aaa" }}>© 2026 Keith Wong</span>
             <span style={{ fontFamily: display, fontSize: 16, color: "#ccc", fontStyle: "italic" }}>Built with intention.</span>
           </div>
