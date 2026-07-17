@@ -12,7 +12,7 @@ const featuredProject = {
   tag: "Fintech Product — In Development",
   description: "A freemium credit card wallet simulator PWA that helps users optimize rewards across their entire card portfolio using a proprietary MCC Composite Valuation methodology.",
   tech: ["Next.js", "TypeScript", "Supabase", "Stripe", "Tailwind CSS", "Vercel"],
-  link: "https://github.com/keithwong8294/mycreditcardinal",
+  link: "https://mycreditcardinal.vercel.app",
 };
 
 const tableauProjects = [
